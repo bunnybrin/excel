@@ -1,2 +1,2 @@
 # excel
-parody to google excel writed from scratch and without frameworks
+parody to google excel wrote from scratch and without frameworks
