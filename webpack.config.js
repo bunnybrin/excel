@@ -25,11 +25,11 @@ module.exports = (env, argv) => {
 			}),
 		];
 
-		if (isDev) {
-			base.push(new ESLintPlugin({
-				// eslintPath: path.resolve(__dirname, '.eslintrc.js'),
-			}));
-		}
+		// if (isDev) {
+		// 	base.push(new ESLintPlugin({
+		// 		// eslintPath: path.resolve(__dirname, '.eslintrc.js'),
+		// 	}));
+		// }
 
 		return base;
 	};

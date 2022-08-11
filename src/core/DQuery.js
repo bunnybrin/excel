@@ -3,6 +3,18 @@ class DQuery {
 		this.$el = typeof selector === 'string' ? document.querySelector(selector) : selector;
 	}
 
+	get data () {
+		return this.$el.dataset;
+	}
+
+	get height () {
+		return this.$el.clientHeight;
+	}
+
+	get width () {
+		return this.$el.clientWidth;
+	}
+
 	html (html) {
 		if (typeof html === 'string') {
 			this.$el.innerHTML = html;
@@ -31,12 +43,47 @@ class DQuery {
 		return this;
 	}
 
+	remove (node) {
+		this.$el.removeChild(node);
+
+		return this;
+	}
+
 	on (eventType, cb) {
-		this.$el.addEventListener(eventType, cb)
+		this.$el.addEventListener(eventType, cb);
 	}
 
 	off (eventType, cb) {
-		this.$el.removeEventListener(eventType, cb)
+		this.$el.removeEventListener(eventType, cb);
+	}
+
+	getMetrix () {
+		return this.$el.getBoundingClientRect();
+	}
+
+	findAll (selector) {
+		return this.$el.querySelectorAll(selector);
+	}
+
+	find (selector) {
+		return this.$el.querySelector(selector);
+	}
+
+	addClass (classes) {
+		return this.$el.classList.add(classes);
+	}
+
+	removeClass (classes) {
+		return this.$el.classList.remove(classes);
+	}
+
+	closest (selector) {
+		return $(this.$el.closest(selector));
+	}
+
+	css (styles = {}) {
+		Object.assign(this.$el.style || {}, styles);
+		return this;
 	}
 }
 
