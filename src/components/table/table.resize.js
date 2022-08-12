@@ -13,7 +13,7 @@ function createLine (el, rootEl, isVertical = true) {
 }
 
 function removeLine (el) {
-	el.remove(el.find('.decorate-line'));
+	el.remove(el.find('.decorate-line').$el);
 }
 
 export function resizeHandler (e, rootEl) {

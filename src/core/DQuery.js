@@ -24,6 +24,23 @@ class DQuery {
 		return this.$el.outerHTML.trim();
 	}
 
+	text (text) {
+		if (typeof text === 'string') {
+			if (this.$el.tagName === 'INPUT') {
+				this.$el.value = text;
+			} else {
+				this.$el.textContent = text;
+			}
+			return this;
+		}
+
+		if (this.$el.tagName === 'INPUT') {
+			return this.$el.value.trim();
+		}
+
+		return this.$el.textContent.trim();
+	}
+
 	clear () {
 		this.html('');
 		return this;
@@ -49,6 +66,22 @@ class DQuery {
 		return this;
 	}
 
+	cellId () {
+		const parsed = this.$el.dataset.id.split(':');
+		return {
+			row: +parsed[0],
+			col: +parsed[1],
+		};
+	}
+
+	focus () {
+		// const end = this.$el.value.length;
+
+		// this.$el.setSelectionRange(end, end);
+		this.$el.focus();
+		return this;
+	}
+
 	on (eventType, cb) {
 		this.$el.addEventListener(eventType, cb);
 	}
@@ -66,15 +99,17 @@ class DQuery {
 	}
 
 	find (selector) {
-		return this.$el.querySelector(selector);
+		return $(this.$el.querySelector(selector));
 	}
 
 	addClass (classes) {
-		return this.$el.classList.add(classes);
+		this.$el.classList.add(classes);
+		return this;
 	}
 
 	removeClass (classes) {
-		return this.$el.classList.remove(classes);
+		this.$el.classList.remove(classes);
+		return this;
 	}
 
 	closest (selector) {
