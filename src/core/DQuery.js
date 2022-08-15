@@ -1,3 +1,5 @@
+import { defaultStyles } from '@/constans';
+
 class DQuery {
 	constructor (selector) {
 		this.$el = typeof selector === 'string' ? document.querySelector(selector) : selector;
@@ -24,8 +26,15 @@ class DQuery {
 		return this.$el.outerHTML.trim();
 	}
 
+	getStyles (styles = []) {
+		return styles.reduce((res, s) => {
+			res[s] = this.$el.style[s] ? this.$el.style[s] : defaultStyles[s];
+			return res;
+		}, {});
+	}
+
 	text (text) {
-		if (typeof text === 'string') {
+		if (typeof text !== 'undefined') {
 			if (this.$el.tagName === 'INPUT') {
 				this.$el.value = text;
 			} else {
@@ -44,6 +53,14 @@ class DQuery {
 	clear () {
 		this.html('');
 		return this;
+	}
+
+	attr (name, val) {
+		if (val) {
+			this.$el.setAttribute(name, val);
+			return this;
+		}
+		return this.$el.getAttribute(name);
 	}
 
 	append (node) {
@@ -66,8 +83,12 @@ class DQuery {
 		return this;
 	}
 
-	cellId () {
+	cellId (parse = false) {
 		const parsed = this.$el.dataset.id.split(':');
+
+		if (parse) {
+			return `${parsed[0]}:${parsed[1]}`;
+		}
 		return {
 			row: +parsed[0],
 			col: +parsed[1],

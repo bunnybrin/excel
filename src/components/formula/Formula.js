@@ -4,10 +4,12 @@ import { $ } from '@core/DQuery';
 export class Formula extends ExcelComponent {
 	static className = 'excel__formula';
 
-	constructor ($root) {
+	constructor ($root, options) {
 		super($root, {
 			name: 'Formula',
 			listeners: ['input', 'keydown'],
+			subscribe: ['currentText'],
+			store: options.store,
 		});
 	}
 
@@ -15,7 +17,10 @@ export class Formula extends ExcelComponent {
 		super.init();
 		const input = this.$root.find('[data-id="formula"]');
 		this.$on('table:select', text => input.text(text));
-		this.$on('table:input', text => input.text(text));
+	}
+
+	storeChanged ({ currentText }) {
+		this.$root.find('[data-id="formula"]').text(currentText);
 	}
 
 	onInput (e) {
@@ -23,7 +28,7 @@ export class Formula extends ExcelComponent {
 	}
 
 	onKeydown (e) {
-		const keys = ['Tab', 'Enter']
+		const keys = ['Tab', 'Enter'];
 		if (keys.includes(e.key)) {
 			e.preventDefault();
 			this.$emit('formula:done');

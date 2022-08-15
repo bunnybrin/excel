@@ -14,5 +14,6 @@
 
   .button {
     @include button(green);
+    margin-right: 2px;
   }
 }
