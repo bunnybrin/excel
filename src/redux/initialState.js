@@ -1,4 +1,3 @@
-import { storage } from '@core/utils';
 import { defaultStyles, defaultTitle } from '@/constans';
 
 const defaultStore = {
@@ -11,4 +10,5 @@ const defaultStore = {
 	stylesState: {},
 };
 
-export const initialState = storage('excel-state') ? storage('excel-state') : defaultStore;
+
+export const initialState = (state) => state || defaultStore

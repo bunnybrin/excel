@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "dev": "webpack serve --mode=development --hot=true",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "lint": "eslint ./src"
   },
   "repository": {
     "type": "git",
