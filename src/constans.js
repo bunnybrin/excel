@@ -11,3 +11,8 @@ export const formatDate = {
 	month: '2-digit',
 	day: 'numeric',
 };
+
+export const tableSize = {
+	col: 26,
+	row: 15,
+};

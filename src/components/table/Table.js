@@ -5,7 +5,7 @@ import { TableSelection } from '@/components/table/TableSelection';
 import { $ } from '@/core/DQuery';
 import { getSelectors, isCell, nextCell, shouldResize } from '@/components/table/table.functions';
 import { applyStyle, changeCurrentStyles, changeText, tableResize } from '@/redux/actions';
-import { defaultStyles } from '@/constans';
+import { defaultStyles, tableSize } from '@/constans';
 import { parseCell } from '@core/parseCell';
 
 export class Table extends ExcelComponent {
@@ -18,9 +18,8 @@ export class Table extends ExcelComponent {
 			store: options.store,
 		});
 
-		this.rowsCount = 15;
-		this.colsCount = 26;
-		// @todo Magic Number. merge this logic and logic from table.template (codes.z - codes.a + 1)
+		this.rowsCount = tableSize.row;
+		this.colsCount = tableSize.col;
 		// @todo add logic work with cell edit like goggle excel
 	}
 
@@ -30,6 +29,7 @@ export class Table extends ExcelComponent {
 
 	init () {
 		super.init();
+		this.selections.setSelectedElement();
 		const $cell = this.$root.find(`[data-id="0:0"]`);
 
 		this.selectCell($cell);
@@ -52,15 +52,20 @@ export class Table extends ExcelComponent {
 
 	onKeydown (e) {
 		const keys = ['Enter', 'Tab', 'ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft'];
-		if (keys.includes(e.key) && !e.shiftKey) {
+		if (keys.includes(e.key)) {
 			e.preventDefault();
+
+			if (e.shiftKey && !this.selections.firstSelected) {
+				this.selections.setFirstSelected(this.selections.current);
+			}
+
 			const { row, col } = nextCell(e.key, this.selections.current.cellId());
 
 			if (row >= 0 && row < this.rowsCount && col >= 0 && col < this.colsCount) {
 				const selector = `[data-id="${row}:${col}"]`;
 				const $next = this.$root.find(selector);
 
-				this.selectCell($next);
+				e.shiftKey ? this.selectGroup($next, this.selections.firstSelected) : this.selectCell($next);
 			}
 		}
 	}
@@ -68,6 +73,7 @@ export class Table extends ExcelComponent {
 	async resizeTable (e) {
 		try {
 			const data = await resizeHandler(e, this.$root);
+			this.selections.addDecorationToSelect();
 			this.$dispatch(tableResize(data));
 		} catch (e) {
 			console.error('Resize error', e);
@@ -81,11 +87,7 @@ export class Table extends ExcelComponent {
 
 		if (isCell(e)) {
 			const $target = $(e.target);
-			if (e.shiftKey) {
-				const groups = [...this.$root.findAll(getSelectors(this.selections.current, $target))].map(el => $(el));
-
-				this.selections.selectGroup(groups);
-			} else this.selectCell($target);
+			e.shiftKey ? this.selectGroup($target) : this.selectCell($target);
 		}
 	}
 
@@ -93,10 +95,17 @@ export class Table extends ExcelComponent {
 		this.updateTextInStore($(e.target).text());
 	}
 
+	selectGroup (next, current = this.selections.current) {
+		const groups = [...this.$root.findAll(getSelectors(current, next))].map(el => $(el));
+
+		this.selections.selectGroup(groups, next);
+	}
+
 	selectCell ($cell) {
 		if (this.selections.current) {
 			this.selections.current.text(parseCell(this.selections.current.text()));
 		}
+
 		this.selections.select($cell);
 		const unparsedStr = this.store.getState().dataState[$cell.cellId(true)] || '';
 		this.$emit('table:select', unparsedStr);

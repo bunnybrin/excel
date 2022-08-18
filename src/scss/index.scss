@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-// <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-//@import "~normalize.css";
 
 @import "header";
 @import "toolbar";
@@ -28,4 +26,18 @@ body {
   font-size: .8rem;
 }
 
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px
+}
+
+::-webkit-scrollbar-track {
+  background-color: #c0c0c0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(green, 0.5);
+  height: 4px;
+}
 

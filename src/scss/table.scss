@@ -2,7 +2,7 @@
 @import "mixins";
 
 .excel__table {
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
   top: $header-height + $toolbar-height + $formula-height;
@@ -117,13 +117,13 @@
     color: #111;
     white-space: nowrap;
     outline: none;
-
-
-    &.selected {
-      border: none;
-      outline: 2px solid $primary-color;
-      z-index: 2;
-    }
   }
 
+}
+
+
+.selected-cells {
+  position: absolute;
+  outline: 2px solid $primary-color;
+  pointer-events: none;
 }

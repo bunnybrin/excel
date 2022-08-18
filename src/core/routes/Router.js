@@ -28,7 +28,6 @@ export class Router {
 
 		const Page = this.routes[route];
 
-		console.log(this);
 		this.page = new Page(ActiveRoute.params)
 		this.$placeholder.append(this.page.getRoot())
 

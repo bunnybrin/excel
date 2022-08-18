@@ -11,17 +11,34 @@
   display: flex;
   justify-content: space-between;
 
-  & .input {
+  .info {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    margin-left: 7px;
+    a {
+      display: inline-block;
+      height: 100%;
+    }
+
+    img {
+      height: 100%;
+      width: auto;
+      margin-right: 12px;
+    }
+  }
+  .input {
     margin: 0;
-    padding: 2px 7px;
+    padding: 4px 7px;
     min-width: 1px;
     color: #000;
     border: 1px solid transparent;
     border-radius: 2px;
-    height: 20px;
+    height: 100%;
     font-size: 18px;
     line-height: 22px;
     outline: none;
+
 
     &:hover {
       border: 1px solid $border-color;

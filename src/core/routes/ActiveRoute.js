@@ -10,4 +10,8 @@ export class ActiveRoute {
 	static navigate (hash) {
 		window.location.hash = hash
 	}
+
+	static get base () {
+		return '#'
+	}
 }

@@ -1,8 +1,14 @@
 import { defaultTitle } from '@/constans';
 
+import logoImg from '@/images/logo.svg'
+import { ActiveRoute } from '@core/routes/ActiveRoute';
 export function createHeader ({ title }) {
 	return `
-			<input type="text" class="input" value="${title || defaultTitle}" />
+			<div class="info">
+				<a href="${ActiveRoute.base}"><img src="${logoImg}" alt="logo"></a>
+				
+				<input type="text" class="input" value="${title || defaultTitle}" />
+			</div>
 
       <div>
         <div class="button" data-button="remove">

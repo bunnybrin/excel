@@ -1,10 +1,11 @@
 import { toInlineStyles } from '@core/utils';
 import { parseCell } from '@core/parseCell';
 
-const cellSizes = {
+const defaultCellSizes = {
 	col: 120,
 	row: 20,
 };
+
 const codes = {
 	a: 65,
 	z: 90,
@@ -12,7 +13,7 @@ const codes = {
 
 function getSize (state = {}, index = 0, type = 'col') {
 	const storeName = type + 'State';
-	return (state[storeName][index] || cellSizes[type]) + 'px';
+	return (state[storeName][index] || defaultCellSizes[type]) + 'px';
 }
 
 function getText (row, col, state) {
@@ -25,10 +26,10 @@ function toChar (_, index) {
 
 function getStyle (row, col, state) {
 	let styles = '';
-	const id = state.stylesState[`${row}:${col}`]
+	const id = state.stylesState[`${row}:${col}`];
 
 	if (id) {
-		styles = toInlineStyles(id) + ';'
+		styles = toInlineStyles(id) + ';';
 	}
 
 	return styles;
@@ -73,6 +74,10 @@ function createRow (content, index = 0, state) {
 	`;
 }
 
+function createSelectedCellElement () {
+	return `<i class="selected-cells" data-select-cell></i>`;
+}
+
 export function createTable (rowsCount = 15, state) {
 	const colsCount = codes.z - codes.a + 1;
 	const cols = new Array(colsCount).fill('')
@@ -89,5 +94,7 @@ export function createTable (rowsCount = 15, state) {
 			.join('');
 		rows.push(createRow(cells, i + 1, state));
 	}
+
+	rows.push(createSelectedCellElement());
 	return rows.join('');
 }
